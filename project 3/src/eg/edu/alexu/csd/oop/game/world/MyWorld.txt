@@ -1,0 +1,139 @@
+package eg.edu.alexu.csd.oop.game.world;
+
+import eg.edu.alexu.csd.oop.game.GameObject;
+import eg.edu.alexu.csd.oop.game.World;
+import eg.edu.alexu.csd.oop.game.object.*;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import java.util.List;
+
+
+/**
+ * Created by Mohamed Abdelrehim on 5/7/2017.
+ */
+
+
+public class MyWorld implements World, Observer {
+
+  private List<GameObject> controllable;
+  private List<GameObject> movable;
+  private List<GameObject> constant;
+  private int controlSpeed;
+  private int gamespeed;
+  private final int width;
+  private final int height;
+  private int score;
+  private Roach roach;
+  private Bin leftBin;
+  private Bin rightBin;
+  private AudioStream BGM;
+  private Color[] availableColors = {Color.RED, Color.BLACK, Color.GREEN, Color.BLUE, Color.ORANGE};
+
+  private static MyWorld ourInstance = new MyWorld(); //singleton
+  public static MyWorld getInstance() {
+    return ourInstance;
+  }
+  private MyWorld() {
+    /*try {
+      InputStream music = new FileInputStream(".\\resources\\cool_music.wav");
+      this.BGM = new AudioStream(music);
+      AudioPlayer.player.start(BGM);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }*/
+    this.width = 1500;
+    this.height = 900;
+    this.score = 0;
+    this.controllable = new LinkedList<>();
+    this.movable = new LinkedList<>();
+    this.constant = new LinkedList<>();
+
+    this.controlSpeed = 15;
+    this.gamespeed = 10;
+    this.roach = new Roach(width/3, (int)(this.height*0.775), 0, 94, width - 250);
+    this.leftBin = new MediumBin((width/3) - 90, (int)(this.height*0.8) + 35, 1,
+        0, width - 350);
+    this.rightBin = new HardBin((width/3) + 194, (int)(this.height*0.8) + 35, 1,
+        280, width);
+    controllable.add(roach);
+    controllable.add(leftBin);
+    controllable.add((rightBin));
+    for (int i = 0; i < 20; i++) {
+      GameObject circle = FallingObjectsFactory.getFlyingObject(getRandomColor());
+      circle.setX(getRandomX());
+      circle.setY(0);
+      System.out.println(circle.getX());
+      movable.add(circle);
+    }
+    System.out.println("size" + movable.size()); //TODO
+  }
+
+
+  private Color getRandomColor() {
+    return availableColors[(int)(Math.random()*availableColors.length)];
+  }
+  private static int getRandomX() {
+    return (int)(Math.random()*1500 );
+  }
+
+  @Override
+  public List<GameObject> getConstantObjects() {
+    return this.constant;
+  }
+
+  @Override
+  public List<GameObject> getMovableObjects() {
+    return this.movable;
+  }
+
+  @Override
+  public List<GameObject> getControlableObjects() {
+    return this.controllable;
+  }
+
+  @Override
+  public int getWidth() {
+    return this.width;
+  }
+
+  @Override
+  public int getHeight() {
+    return this.height;
+  }
+
+  @Override
+  public boolean refresh() {
+    Iterator i = movable.iterator();
+    while (i.hasNext()) {
+      GameObject current = (GameObject) i.next();
+      current.setY((current.getY() + 1) % 900);
+    }
+    return true;
+  }
+
+  @Override
+  public String getStatus() {
+    return "Score:  " + this.score;
+  }
+
+  @Override
+  public int getSpeed() {
+    return this.gamespeed;
+  }
+
+  @Override
+  public int getControlSpeed() {
+    return this.controlSpeed;
+  }
+
+  @Override
+  public void update(Observable o, Object arg) {
+
+  }
+
+}

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="FallingBall:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FallingBall_jar</output-path>
+    <root id="archive" name="FallingBall.jar">
+      <element id="module-output" name="FallingBall" />
+    </root>
+  </artifact>
+</component>

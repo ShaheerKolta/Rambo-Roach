@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="FallingRect:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FallingRect_jar</output-path>
+    <root id="archive" name="FallingRect.jar">
+      <element id="module-output" name="FallingRect" />
+    </root>
+  </artifact>
+</component>
